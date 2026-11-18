@@ -85,6 +85,9 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             b'<div class="title"><h1>SearXNG</h1></div>',
             result.data,
         )
+        self.assertIn(b'id="categories_container"', result.data)
+        self.assertIn(b'id="selected-categories"', result.data)
+        self.assertIn(b'id="send_search" type="submit" name="category_', result.data)
 
     def test_index_html_post(self):
         result = self.client.post('/', data={'q': 'test'})
@@ -124,6 +127,9 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             b'<p class="content">\n    second <span class="highlight">test</span> ',
             result.data,
         )
+        self.assertIn(b'<div class="search_filters">', result.data)
+        self.assertIn(b'<details class="result-meta">', result.data)
+        self.assertIn(b'Sources and cached link', result.data)
 
     def test_index_json(self):
         result = self.client.post('/', data={'q': 'test', 'format': 'json'})
@@ -174,6 +180,17 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         result = self.client.get('/info/en/search-syntax')
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'<h1>Search syntax</h1>', result.data)
+
+    def test_ui_page_render_smoke(self):
+        for path in ('/', '/search?q=theme', '/preferences', '/info/en/about', '/stats'):
+            with self.subTest(path=path):
+                result = self.client.get(path)
+                self.assertEqual(result.status_code, 200)
+                self.assertIn(b'<html', result.data)
+
+        rtl_result = self.client.get('/preferences?locale=ar')
+        self.assertEqual(rtl_result.status_code, 200)
+        self.assertEqual(self.client.get('/not-a-real-page').status_code, 404)
 
     def test_health(self):
         result = self.client.get('/healthz')

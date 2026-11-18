@@ -58,10 +58,13 @@
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result) -%}
 </div>
-<div class="engines">
+<details class="result-meta">
+  <summary>{{ icon_small('ellipsis-vertical') }} {{ _('Sources and cached link') }}</summary>
+  <div class="engines">
   {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
-  {{ icon_small('ellipsis-vertical') + result_link(cache_url + result.url, _('cached'), "cache_link") }}
-</div>{{- '' -}}
+    {{ result_link(cache_url + result.url, _('cached'), "cache_link") }}
+  </div>
+</details>{{- '' -}}
 <div class="break"></div>{{- '' -}}
 {%- endmacro -%}
 

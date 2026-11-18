@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #main_index {
-  margin-top: 26vh;
+  margin-top: clamp(5rem, 19vh, 12rem);
 }
 
 .index {
@@ -9,8 +9,9 @@
 
   .title {
     background: url("./img/searxng.png") no-repeat;
-    min-height: 4rem;
-    margin: 4rem auto;
+    width: min(100% - 2rem, 18rem);
+    min-height: 4.5rem;
+    margin: 0 auto 2.25rem;
     background-position: center;
     background-size: contain;
   }
@@ -26,7 +27,9 @@
     background: inherit;
     border: inherit;
     padding: 0;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .search_filters {
@@ -38,6 +41,11 @@
     padding: 6px 10px;
     border-bottom: initial !important;
   }
+
+  #categories {
+    width: min(100%, 44rem);
+    margin: 1.25rem auto 0;
+  }
 }
 
 @media screen and (max-width: @tablet) {
@@ -48,6 +56,6 @@
   }
 
   #main_index {
-    margin-top: 6em;
+    margin-top: 6rem;
   }
 }

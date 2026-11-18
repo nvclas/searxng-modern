@@ -24,15 +24,18 @@ table {
 
   fieldset {
     margin: 8px;
+    padding: 0.75rem 0;
     border: none;
+    border-bottom: 1px solid var(--color-result-border);
   }
 
   legend {
     margin: 0;
-    padding: 5px 0 0 0;
+    padding: 0.5rem 0;
     display: block;
-    .ltr-float-left();
-    width: 300px;
+    float: none;
+    width: 100%;
+    font-weight: 600;
   }
 
   input[type="text"] {
@@ -61,8 +64,8 @@ table {
   .value {
     margin: 0;
     padding: 0;
-    .ltr-float-left();
-    width: 15em;
+    float: none;
+    width: auto;
 
     select,
     input[type="text"] {
@@ -86,9 +89,9 @@ table {
 
   .description {
     margin: 0;
-    padding: 5px 0 0 0;
-    .ltr-float-right();
-    width: 50%;
+    padding: 0.35rem 0 0;
+    float: none;
+    width: auto;
     color: var(--color-settings-engine-description-font);
     font-size: 90%;
   }

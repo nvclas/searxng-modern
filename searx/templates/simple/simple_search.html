@@ -4,14 +4,13 @@
       <div class="search_box">
         <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
         <button id="clear_search" type="reset" aria-label="{{ _('clear') }}" class="hide_if_nojs"><span>{{ icon_big('close') }}</span></button>
-        <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+        <button id="send_search" type="submit" {% if search_on_category_select %}name="category_{{ selected_categories[0]|replace(' ', '_') }}"{% endif %} aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
         <div class="autocomplete hide_if_nojs"><ul></ul></div>
       </div>
     </div>
+    {% set display_tooltip = true %}
+    {% include 'simple/categories.html' %}
   </div>
-  {% for category in selected_categories %}
-  <input type="hidden" name="category_{{ category }}" value="1" >
-  {% endfor %}
   <input type="hidden" name="language" value="{{ current_language }}" >
   <input type="hidden" name="time_range" value="{{ time_range }}" >
   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
