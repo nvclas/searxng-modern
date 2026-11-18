@@ -13,20 +13,43 @@ const isResultsPage: boolean = document.querySelector("main")?.id === "main_resu
 const categoryButtons: HTMLButtonElement[] = Array.from(
   document.querySelectorAll<HTMLButtonElement>("#categories_container button.category")
 );
-const categoriesMore = document.querySelector<HTMLDetailsElement>(".categories_more");
+const headerDropdowns: HTMLDetailsElement[] = Array.from(
+  document.querySelectorAll<HTMLDetailsElement>("details.header_dropdown")
+);
 
-if (categoriesMore) {
+if (headerDropdowns.length > 0) {
   listen("click", document, (event: MouseEvent) => {
-    if (event.target instanceof Node && !categoriesMore.contains(event.target)) {
-      categoriesMore.open = false;
+    const clickedDropdown =
+      event.target instanceof Element ? event.target.closest("details.header_dropdown") : null;
+    for (const dropdown of headerDropdowns) {
+      if (dropdown !== clickedDropdown) {
+        dropdown.open = false;
+      }
     }
   });
 
   listen("keydown", document, (event: KeyboardEvent) => {
     if (event.key === "Escape") {
-      categoriesMore.open = false;
+      for (const dropdown of headerDropdowns) {
+        if (dropdown.open) {
+          dropdown.open = false;
+          dropdown.querySelector("summary")?.focus();
+        }
+      }
     }
   });
+
+  for (const dropdown of headerDropdowns) {
+    listen("toggle", dropdown, () => {
+      if (dropdown.open) {
+        for (const otherDropdown of headerDropdowns) {
+          if (otherDropdown !== dropdown) {
+            otherDropdown.open = false;
+          }
+        }
+      }
+    });
+  }
 }
 
 // focus search input on large screens

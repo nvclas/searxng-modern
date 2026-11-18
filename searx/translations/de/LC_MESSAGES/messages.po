@@ -1343,6 +1343,10 @@ msgstr "Vorschläge"
 msgid "Search language"
 msgstr "Such-Sprache/-Region"
 
+#: searx/templates/simple/search.html
+msgid "Search filters"
+msgstr "Suchfilter"
+
 #: searx/templates/simple/filters/languages.html:4
 #: searx/templates/simple/preferences/language.html:7
 msgid "Default language"

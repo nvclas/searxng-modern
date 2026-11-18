@@ -1,3 +1,4 @@
+{% from 'simple/icons.html' import icon_big %}
 <form id="search" method="{{ method }}" action="{{ url_for('search') }}" role="search">
   <div id="search_header">
     <a id="search_logo" href="{{ url_for('index') }}" tabindex="0" title="{{ _('Display the front page') }}">
@@ -14,11 +15,27 @@
     </div>
     {% set display_tooltip = true %}
     {% set categories_more = true %}
-    {% include 'simple/categories.html' %}
-    <div class="search_filters">
-      {% include 'simple/filters/languages.html' %}
-      {% include 'simple/filters/time_range.html' %}
-      {% include 'simple/filters/safesearch.html' %}
+    <div class="search_toolbar">
+      {% include 'simple/categories.html' %}
+      <details class="search_tools header_dropdown">
+        <summary aria-label="{{ _('Search filters') }}"><span class="search_tools_icon">{{ icon_big('settings') }}</span><span>{{ _('Search filters') }}</span></summary>
+        <div class="search_tools_menu">
+          <div class="search_filters">
+            <div class="search_filter">
+              <label for="language">{{ _('Search language') }}</label>
+              {% include 'simple/filters/languages.html' %}
+            </div>
+            <div class="search_filter">
+              <label for="time_range">{{ _('Time range') }}</label>
+              {% include 'simple/filters/time_range.html' %}
+            </div>
+            <div class="search_filter">
+              <label for="safesearch">{{ _('SafeSearch') }}</label>
+              {% include 'simple/filters/safesearch.html' %}
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
   <input type="hidden" name="theme" value="{{ theme }}" >

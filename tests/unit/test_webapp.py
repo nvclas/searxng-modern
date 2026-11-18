@@ -135,7 +135,12 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         )
         self.assertIn(b'<div class="search_filters">', result.data)
         self.assertIn(b'<div class="categories_primary">', result.data)
-        self.assertIn(b'<details class="categories_more">', result.data)
+        self.assertIn(b'<details class="categories_more header_dropdown">', result.data)
+        self.assertIn(b'<div class="search_toolbar">', result.data)
+        self.assertIn(b'<details class="search_tools header_dropdown">', result.data)
+        self.assertIn(b'<label for="language">Search language</label>', result.data)
+        self.assertIn(b'<label for="time_range">Time range</label>', result.data)
+        self.assertIn(b'<label for="safesearch">SafeSearch</label>', result.data)
         self.assertIn(b'<details class="result-meta">', result.data)
         self.assertIn(b'Sources and cached link', result.data)
 

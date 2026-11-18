@@ -42,8 +42,7 @@ body.results_endpoint #search_header {
   grid-template-columns: 2.5rem minmax(0, 44rem);
   grid-template-areas:
     "logo search"
-    "spacer categories"
-    "spacer filters";
+    "spacer categories";
   gap: 0.25rem 1rem;
   padding-block: 0.75rem 0.5rem;
   padding-inline: var(--modern-page-start) 8rem;
@@ -59,6 +58,10 @@ body.results_endpoint #search_header {
 .search_categories {
   min-width: 0;
   padding: 0.25rem 0 0;
+}
+
+.search_toolbar .search_categories {
+  flex: 1 1 auto;
 }
 
 html {
@@ -229,6 +232,23 @@ a {
   border-bottom: 2px solid transparent;
 }
 
+.search_filter {
+  display: grid;
+  gap: 0.2rem;
+
+  label {
+    color: var(--modern-muted);
+    font-size: 0.85rem;
+  }
+}
+
+.search_tools_icon,
+.search_tools_icon svg {
+  display: block;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
 .category_checkbox label:hover,
 .category_button:hover {
   color: var(--modern-accent);
@@ -257,13 +277,11 @@ a {
 }
 
 .search_filters {
-  grid-area: filters;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: min(100%, 44rem);
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
   margin: 0;
-  padding: 0.2rem 0 0.35rem;
+  padding: 0;
 }
 
 select,
@@ -499,6 +517,17 @@ footer {
   }
 }
 
+.search_toolbar {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  grid-area: categories;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+}
+
 body.results_endpoint #search_header #categories_container {
   display: flex;
   align-items: center;
@@ -521,9 +550,15 @@ body.results_endpoint #search_header #categories_container {
   display: none;
 }
 
-.categories_more {
+.search_tools > summary {
+  gap: 0.45rem;
+}
+
+.categories_more,
+.search_tools {
   position: relative;
   flex: 0 0 auto;
+  z-index: 1;
 
   > summary {
     display: inline-flex;
@@ -553,12 +588,21 @@ body.results_endpoint #search_header #categories_container {
   }
 
   > summary:hover,
-  &[open] > summary,
-  &:has(input:checked) > summary,
-  &:has(.category_button.selected) > summary {
+  &[open] > summary {
     border-bottom-color: var(--modern-accent);
     color: var(--modern-accent);
   }
+}
+
+.categories_more[open],
+.search_tools[open] {
+  z-index: 100;
+}
+
+.categories_more:has(input:checked) > summary,
+.categories_more:has(.category_button.selected) > summary {
+  border-bottom-color: var(--modern-accent);
+  color: var(--modern-accent);
 }
 
 .categories_more_icon {
@@ -566,9 +610,10 @@ body.results_endpoint #search_header #categories_container {
   line-height: 1;
 }
 
+.search_tools_menu,
 .categories_more_menu {
   position: absolute;
-  z-index: 30;
+  z-index: 100;
   inset-block-start: calc(100% + 0.35rem);
   inset-inline-end: 0;
   display: grid;
@@ -580,6 +625,20 @@ body.results_endpoint #search_header #categories_container {
   border-radius: 0.8rem;
   background: var(--modern-surface);
   box-shadow: 0 4px 16px rgb(32 33 36 / 20%);
+}
+
+.search_tools .search_filters {
+  padding: 0.85rem;
+}
+
+.search_tools_menu {
+  min-width: 18rem;
+  max-width: calc(100vw - 2rem);
+}
+
+.search_tools .search_filter select {
+  width: 100%;
+  min-width: 0;
 }
 
 .categories_more_menu .category_button {
@@ -638,8 +697,7 @@ body.results_endpoint #search_header #categories_container {
   body.results_endpoint #search_header {
     grid-template-areas:
       "logo search"
-      "categories categories"
-      "filters filters";
+      "categories categories";
     gap: 0.25rem 0.6rem;
     padding-block: 0.5rem;
     padding-inline: 1rem 7rem;
@@ -661,14 +719,20 @@ body.results_endpoint #search_header #categories_container {
     min-height: 2.75rem;
   }
 
-  .search_filters {
-    gap: 0.35rem;
-    margin: 0;
-    padding: 0.2rem 0;
+  .search_tools > summary {
+    min-height: 2.5rem;
+    font-size: 0.85rem;
   }
 
-  .search_filters select {
+  .search_tools .search_filters {
     min-width: 0;
+  }
+
+  .search_tools_menu {
+    min-width: min(18rem, calc(100vw - 2rem));
+  }
+
+  .search_tools .search_filter select {
     font-size: 0.85rem;
   }
 
