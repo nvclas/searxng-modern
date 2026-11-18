@@ -13,6 +13,21 @@ const isResultsPage: boolean = document.querySelector("main")?.id === "main_resu
 const categoryButtons: HTMLButtonElement[] = Array.from(
   document.querySelectorAll<HTMLButtonElement>("#categories_container button.category")
 );
+const categoriesMore = document.querySelector<HTMLDetailsElement>(".categories_more");
+
+if (categoriesMore) {
+  listen("click", document, (event: MouseEvent) => {
+    if (event.target instanceof Node && !categoriesMore.contains(event.target)) {
+      categoriesMore.open = false;
+    }
+  });
+
+  listen("keydown", document, (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      categoriesMore.open = false;
+    }
+  });
+}
 
 // focus search input on large screens
 if (!(isMobile || isResultsPage)) {

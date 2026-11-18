@@ -87,6 +87,7 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         )
         self.assertIn(b'id="categories_container"', result.data)
         self.assertIn(b'id="selected-categories"', result.data)
+        self.assertNotIn(b'class="categories_more"', result.data)
         self.assertIn(b'id="send_search" type="submit" name="category_', result.data)
 
     def test_index_html_post(self):
@@ -117,6 +118,11 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
         self.assertEqual(result.status_code, 400)
 
     def test_search_html(self):
+        self.setattr4test(
+            searx.webapp,
+            'get_enabled_categories',
+            lambda category_names: ['general', 'images', 'videos', 'news', 'map', 'music', 'it'],
+        )
         result = self.client.post('/search', data={'q': 'test'})
 
         self.assertIn(
@@ -128,6 +134,8 @@ class ViewsTestCase(SearxTestCase):  # pylint: disable=too-many-public-methods
             result.data,
         )
         self.assertIn(b'<div class="search_filters">', result.data)
+        self.assertIn(b'<div class="categories_primary">', result.data)
+        self.assertIn(b'<details class="categories_more">', result.data)
         self.assertIn(b'<details class="result-meta">', result.data)
         self.assertIn(b'Sources and cached link', result.data)
 

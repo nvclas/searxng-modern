@@ -25,25 +25,55 @@
     "videos": "play",
     "weather": "rainy",
   }  -%}
+{% macro category_item(category) -%}
+    {%- if not search_on_category_select or not display_tooltip -%}
+        <div class="category category_checkbox">{{- '' -}}
+            <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}>
+            <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
+                {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe') -}}
+                <div class="category_name">{{- _(category) -}}</div>
+            </label>
+        </div>
+    {%- else -%}
+        <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
+            {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe') -}}
+            <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
+        </button>
+    {%- endif -%}
+{%- endmacro %}
 <div id="categories" class="search_categories">{{- '' -}}
     <div id="categories_container">
-        {%- if not search_on_category_select or not display_tooltip -%}
-            {%- for category in categories -%}
-                <div class="category category_checkbox">{{- '' -}}
-                    <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}>
-                    <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
-                        {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe') -}}
-                        <div class="category_name">{{- _(category) -}}</div>
-                    </label>
+        {%- if categories_more and categories|length > 6 -%}
+            <div class="categories_primary">
+                {%- for category in categories -%}
+                    {%- if loop.index <= 5 or category in selected_categories -%}
+                        {{- category_item(category) -}}
+                    {%- endif -%}
+                {%- endfor -%}
+            </div>
+            <details class="categories_more">
+                <summary aria-label="{{ _('Other') }}"><span class="categories_more_icon" aria-hidden="true">⋯</span><span>{{ _('Other') }}</span></summary>
+                <div class="categories_more_menu">
+                    {%- for category in categories -%}
+                        {%- if loop.index > 5 and category not in selected_categories -%}
+                            {{- category_item(category) -}}
+                        {%- endif -%}
+                    {%- endfor -%}
                 </div>
+            </details>
+            {%- if not search_on_category_select or not display_tooltip -%}
+                {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
+            {%- else -%}
+                <input name="categories" id="selected-categories" type="hidden" />
+            {%- endif -%}
+        {%- elif not search_on_category_select or not display_tooltip -%}
+            {%- for category in categories -%}
+                {{- category_item(category) -}}
             {%- endfor -%}
             {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
         {%- else -%}
-            {%- for category in categories -%}{{- '\n' -}}
-                <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
-                    {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe') -}}
-                    <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
-                </button>{{- '' -}}
+            {%- for category in categories -%}
+                {{- category_item(category) -}}
             {%- endfor -%}
             <input name="categories" id="selected-categories" type="hidden" />
             {{- '\n' -}}
