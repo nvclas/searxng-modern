@@ -30,8 +30,8 @@ jobs:
       - name: Generate image version metadata
         id: version
         run: |
-          python3 -m searx.version freeze
-          eval "$(python3 -m searx.version)"
+          python3 searx/version.py freeze
+          eval "$(python3 searx/version.py)"
           printf 'docker_tag=%s\n' "$DOCKER_TAG" >> "$GITHUB_OUTPUT"
           printf 'version=%s\n' "$VERSION_STRING" >> "$GITHUB_OUTPUT"
           printf 'git_url=%s\n' "$GIT_URL" >> "$GITHUB_OUTPUT"
