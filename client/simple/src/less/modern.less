@@ -3,6 +3,7 @@
 :root {
   color-scheme: light;
 
+  --modern-page-start: clamp(1rem, 7vw, 12rem);
   --modern-surface: #fff;
   --modern-surface-subtle: #f8f9fa;
   --modern-border: #dadce0;
@@ -45,7 +46,7 @@ body.results_endpoint #search_header {
     "spacer filters";
   gap: 0.25rem 1rem;
   padding-block: 0.75rem 0.5rem;
-  padding-inline: max(1rem, calc((100vw - 90rem) / 2)) 8rem;
+  padding-inline: var(--modern-page-start) 8rem;
   background: var(--color-header-background);
   border-bottom: 1px solid var(--color-header-border);
 }
@@ -308,16 +309,21 @@ textarea {
 
 #results {
   width: min(
-    calc(100% - 2rem),
+    calc(100% - var(--modern-page-start) - 4.5rem),
     calc(@results-width + @results-sidebar-width + @results-gap)
   );
   max-width: 100%;
-  margin: 1.5rem auto 2rem;
+  margin: 1.5rem 0 2rem;
+  margin-inline-start: calc(var(--modern-page-start) + 3.5rem);
   grid-template-columns: minmax(0, @results-width) minmax(
       16rem,
       @results-sidebar-width
     );
   gap: 0 @results-gap;
+}
+
+#backToTop {
+  .ltr-left(calc(var(--modern-page-start) + 3.5rem + @results-width + @results-gap / 2 - 1.2em));
 }
 
 #urls {
@@ -506,7 +512,8 @@ footer {
   }
 
   #results {
-    width: min(calc(100% - 2rem), @results-width);
+    width: min(calc(100% - 5.5rem), @results-width);
+    margin-inline-start: 4.5rem;
     grid-template-columns: minmax(0, 1fr);
     gap: 1rem 0;
   }
