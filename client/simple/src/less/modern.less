@@ -47,7 +47,6 @@ body.results_endpoint #search_header {
   padding-block: 0.75rem 0.5rem;
   padding-inline: var(--modern-page-start) 8rem;
   background: var(--color-header-background);
-  border-bottom: 1px solid var(--color-header-border);
 }
 
 #search_view {
@@ -182,6 +181,13 @@ a {
   }
 }
 
+.search_box:has(.autocomplete.open):focus-within,
+.search_box.has-autocomplete {
+  border-color: transparent;
+  border-radius: 1.5rem 1.5rem 0 0;
+  box-shadow: var(--color-search-shadow);
+}
+
 #q {
   min-width: 0;
   min-height: 3rem;
@@ -308,8 +314,22 @@ textarea {
   overflow-x: hidden;
   border: 1px solid var(--modern-border);
   border-top: 0;
+  border-radius: 1rem 1rem 0 0;
   background: var(--modern-surface);
   box-shadow: var(--color-autocomplete-shadow);
+}
+
+.search_box:has(.autocomplete.open):focus-within .autocomplete,
+.search_box.has-autocomplete .autocomplete {
+  top: 100%;
+  left: -1px;
+  width: calc(100% + 2px);
+  max-width: none;
+  border: 0;
+  border-top: 1px solid var(--modern-border);
+  border-radius: 0 0 1.5rem 1.5rem;
+  background: var(--color-search-background);
+  box-shadow: var(--color-search-shadow);
 }
 
 .autocomplete.open {
@@ -325,9 +345,9 @@ textarea {
   margin: 1.5rem 0 2rem;
   margin-inline-start: calc(var(--modern-page-start) + 3.5rem);
   grid-template-columns: minmax(0, @results-width) minmax(
-      16rem,
-      @results-sidebar-width
-    );
+    16rem,
+    @results-sidebar-width
+  );
   gap: 0 @results-gap;
 }
 
