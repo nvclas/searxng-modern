@@ -46,6 +46,35 @@ const hideBrokenThumbnail = (img: HTMLImageElement): void => {
   }
 };
 
+/**
+ * The image gallery is laid out by the aspect ratio (CSS variable `--ar`) of
+ * the images.  The template sets it from the resolution of the result; if it
+ * is missing, we derive it from the thumbnail as soon as it is loaded.
+ */
+const setImageRatio = (img: HTMLImageElement): void => {
+  if (!img.classList.contains("image_thumbnail")) return;
+
+  const article = img.closest<HTMLElement>("article.result-images");
+  if (!article || article.style.getPropertyValue("--ar")) return;
+
+  if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+    article.style.setProperty("--ar", (img.naturalWidth / img.naturalHeight).toFixed(4));
+  }
+};
+
+// "load" does not bubble, but can be captured (also covers the images that are added by the infinite scroll)
+document.addEventListener(
+  "load",
+  (event: Event) => {
+    if (event.target instanceof HTMLImageElement) setImageRatio(event.target);
+  },
+  true
+);
+// some images may have already been loaded
+for (const img of document.querySelectorAll<HTMLImageElement>("#urls img.image_thumbnail")) {
+  if (img.complete) setImageRatio(img);
+}
+
 document.addEventListener(
   "error",
   (event: Event) => {

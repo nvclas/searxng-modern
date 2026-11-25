@@ -5,14 +5,22 @@
 {%- endmacro %}
 
 {% macro _label(label, value) -%}
-  {%- if value -%}<span>{{ label }}:</span>{{ value }}
-  {%- else %} &nbsp;
-  {%- endif -%}
+  {%- if value -%}<span>{{ label }}:</span>{{ value }}{%- endif -%}
 {%- endmacro %}
+
+{#- aspect ratio (width / height) from the resolution, e.g. "1920 x 1080": it is
+    used by the CSS to build the justified gallery.  The client calculates it
+    from the thumbnail if the resolution is not available. -#}
+{%- set _res = (result.resolution or '') | string | lower | replace(' ', '') | replace('×', 'x') -%}
+{%- set _wh = _res.split('x') -%}
+{%- set _ar = (_wh[0] | int / _wh[1] | int) | round(4)
+    if (_wh | length == 2 and _wh[0].isdigit() and _wh[1].isdigit() and _wh[1] | int > 0)
+    else none -%}
 
 <article class="result result-images
   {%- if result["category"] %} category-{{ result["category"] }}
   {%- endif -%}"
+  {%- if _ar %} style="--ar: {{ _ar }}"{% endif %}
 >
   <a {{ _target(results_on_new_tab) }} href="{{ result.img_src }}">
     <img class="image_thumbnail" {{ _target(results_on_new_tab) }}
@@ -23,7 +31,7 @@
       {{ image_proxify(result.img_src) }}
       {%- endif -%}
       "
-      alt="{{ result.title | striptags }}" loading="lazy" width="200" height="200"
+      alt="{{ result.title | striptags }}" loading="lazy"
       {{- "" -}}
     >
     {%- if result.resolution %}
@@ -41,12 +49,11 @@
         data-src="{{ image_proxify(result.img_src) }}"
         alt="{{ result.title | striptags }}">
     </a>
+    <a class="result-images-visit" {{ _target(results_on_new_tab) }} href="{{ result.url }}">{{ _("View source") }}</a>
     <div class="result-images-labels">
       <h4>{{ result.title | striptags }}</h4>
       <p class="result-content">
-        {%- if result.content %} {{ result.content | striptags }}
-        {%- else %} &nbsp;
-        {%- endif -%}
+        {%- if result.content %}{{ result.content | striptags }}{% endif -%}
       </p>
       <hr>
       <p class="result-author">{{ _label(_("Author"), result.author) }}</p>
