@@ -786,9 +786,15 @@ body.results_endpoint #search_header {
   }
 }
 
+// video thumbnails are floated to the start, not to the end
+.result-videos a.thumbnail_link {
+  margin-inline: 0 1rem;
+}
+
 article[data-vim-selected]:not(.result-images) {
   background: var(--modern-hover);
-  border-inline-start-color: var(--modern-accent);
+  border: 0 solid transparent;
+  border-inline-start: 0.2rem solid var(--modern-accent);
   border-radius: 0.75rem;
 }
 
@@ -796,9 +802,14 @@ article[data-vim-selected]:not(.result-images) {
 .category-news,
 .category-map,
 .category-music,
-.category-social {
-  margin: 0 0 1.7rem !important;
-  border: 0;
+.category-social,
+#main_results .result-file {
+  // the classic layout sets an !important margin on these categories, keep
+  // the same horizontal alignment as all other results
+  margin-block: 0 1.7rem !important;
+  margin-inline: -0.75rem !important;
+  border: 0 solid transparent;
+  border-inline-start-width: 0.2rem;
 }
 
 .result-meta {
